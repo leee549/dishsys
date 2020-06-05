@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lhx.dishsys.dao.RoleDao">
+    <resultMap id="BaseResultMap" type="RoleInfo">
+        <id column="role_id" property="roleId"/>
+        <result column="role_name" property="roleName"/>
+    </resultMap>
+
+
+    <select id="getByUserId" resultMap="BaseResultMap">
+            SELECT r.role_name
+            FROM role_info r
+            left JOIN  user_info u on u.role_id= r.role_id
+            where u.user_id=#{id}
+
+    </select>
+
+</mapper>

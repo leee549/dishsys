@@ -1,13 +1,13 @@
 package cn.lhx.dishsys.core.exception;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
-
 import cn.lhx.dishsys.core.base.JsonResult;
 import cn.lhx.dishsys.core.enmus.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -59,6 +59,15 @@ public class GlobalExceptionHandler {
     request.setAttribute("javax.servlet.error.status_code", ResultCode.UN_AUTHORIZED.val);
     return "forward:/error";
   }
+
+  /** 未认证 */
+  @ResponseBody
+  @ExceptionHandler(UnauthenticatedException.class)
+  public JsonResult<Object> unauthorizedException(UnauthenticatedException ex){
+    return JsonResult.error(ResultCode.Un_authenticated.msg,ResultCode.Un_authenticated.val);
+  }
+
+
   /** 未知异常 */
   @ExceptionHandler(Exception.class)
   public String unkownException(Exception ex) {

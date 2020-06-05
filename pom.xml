@@ -8,6 +8,7 @@
         <version>2.2.7.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+    <packaging>jar</packaging>
     <groupId>cn.lhx.dishsys</groupId>
     <artifactId>dishsys</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -32,11 +33,6 @@
     </properties>
 
     <dependencies>
-        <!--thymeleaf-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -72,11 +68,6 @@
             <groupId>com.github.whvcse</groupId>
             <artifactId>easy-captcha</artifactId>
         </dependency>
-        <!--shiro与spring集成  会导入shiro core 和shiro web-->
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring</artifactId>
-        </dependency>
         <!--redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -98,20 +89,11 @@
             <artifactId>java-jwt</artifactId>
             <version>3.4.0</version>
         </dependency>
-        <!--引入jquery-webjar-->
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery</artifactId>
-            <version>3.3.1</version>
-        </dependency>
 
-        <!--引入bootstrap-->
         <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>4.0.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-
 
 
         <dependency>
@@ -120,7 +102,12 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-spring-boot-web-starter -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -160,10 +147,10 @@
                 <artifactId>easy-captcha</artifactId>
                 <version>${esay-captch.version}</version>
             </dependency>
-            <!--shiro-->
+            <!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-spring-boot-web-starter -->
             <dependency>
                 <groupId>org.apache.shiro</groupId>
-                <artifactId>shiro-spring</artifactId>
+                <artifactId>shiro-spring-boot-web-starter</artifactId>
                 <version>${shiro.version}</version>
             </dependency>
             <!--redis-->

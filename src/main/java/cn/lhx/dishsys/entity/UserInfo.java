@@ -16,6 +16,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @TableName("user_info")
 public class UserInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Integer userId;
     private String userAccount;
     private String userPass;

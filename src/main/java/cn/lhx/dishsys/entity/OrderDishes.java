@@ -17,6 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @TableName("order_dishes")
 public class OrderDishes implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Integer od_id;
     private Integer orderReference;
     private Integer dishes;

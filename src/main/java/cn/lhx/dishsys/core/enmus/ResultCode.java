@@ -29,7 +29,10 @@ public enum ResultCode {
     // 参数异常
     ARG_ERROR(400, "参数错误"),
     // 权限不足
-    UN_AUTHORIZED(401, "权限不足");
+    UN_AUTHORIZED(401, "权限不足"),
+    //未认证
+    Un_authenticated(403,"身份未认证");
+
 
 
     /** 取值 */

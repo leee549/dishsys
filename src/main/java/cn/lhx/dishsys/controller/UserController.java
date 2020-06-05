@@ -1,15 +1,14 @@
 package cn.lhx.dishsys.controller;
 
 import cn.lhx.dishsys.core.base.JsonResult;
-import cn.lhx.dishsys.entity.UserInfo;
+import cn.lhx.dishsys.service.PermissionService;
+import cn.lhx.dishsys.service.RoleService;
 import cn.lhx.dishsys.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Set;
 
 /**
  * @author lee549
@@ -19,12 +18,19 @@ import javax.annotation.Resource;
 public class UserController {
     @Resource
     private UserService userService;
+    @Resource
+    private RoleService roleService;
+    @Resource
+    private PermissionService permissionService;
 
+
+    // @RequiresPermissions("user:list")
     @GetMapping("/user")
     public JsonResult<Object> getUser(){
-        // userService
+        Set<String> byEmpId = roleService.getByUserId(1);
+        Set<String> permissionByRoleId = permissionService.getPermissionByRoleId(1);
+       return JsonResult.success("success!!!!");
 
-        return JsonResult.success();
     }
 
 

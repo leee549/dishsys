@@ -18,6 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @TableName("dishes_info")
 public class DishesInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Integer dishesId;
     private String dishesName;
     private String dishesDiscript;

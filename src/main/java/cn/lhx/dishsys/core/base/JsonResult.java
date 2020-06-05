@@ -52,6 +52,10 @@ public class JsonResult<T> {
         return JsonResult.builder().ret(true).status(status).data(data).build();
 
     }
+    public static <T> JsonResult<Object> success(T data,Integer status,String msg) {
+        return JsonResult.builder().status(status).data(data).msg(msg).build();
+
+    }
 
     public static <T> JsonResult<Object> error() {
         return JsonResult.builder().status(ResultCode.fail.val).ret(false).build();
@@ -65,4 +69,11 @@ public class JsonResult<T> {
     public static <T> JsonResult<Object> error(String msg,Object data) {
         return JsonResult.builder().ret(false).msg(msg).data(data).build();
     }
+//    public JsonResult(String msg,T data){
+//        this.msg=msg;
+//        this.data=data;
+//    }
+//    public static <T> JsonResult<T> test(String msg,T data){
+//        return new JsonResult<T>(msg,data);
+//    }
 }

@@ -27,7 +27,7 @@ public class Md5Util {
 
   public static void main(String[] args) {
 
-    String salt = "1";
+    String salt = "2";
    System.out.println(Md5Util.encode("1",salt));
 
 

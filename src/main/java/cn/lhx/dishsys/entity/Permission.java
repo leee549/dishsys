@@ -7,17 +7,18 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/**UserInfo
+/**
  * @author lee549
- * @date 2020/5/21 21:46
+ * @date 2020/5/30 20:06
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("role_info")
-public class RoleInfo implements Serializable {
+@TableName(value = "permission")
+public class Permission implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Integer roleId;
-    private String roleName;
+    private Long id;
+    private String name;
+    private String expression;
 
 }

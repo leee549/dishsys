@@ -1,22 +1,20 @@
 package cn.lhx.dishsys.config;
 
-import cn.lhx.dishsys.core.cache.ShiroCacheManager;
-
-import cn.lhx.dishsys.core.cache.session.MySessionManager;
-import cn.lhx.dishsys.core.cache.session.SessionDao;
+import cn.lhx.dishsys.core.filter.JwtFilter;
 import cn.lhx.dishsys.security.shiro.realm.MyRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.session.mgt.DefaultSessionManager;
+import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
+import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 
+import javax.servlet.Filter;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -36,21 +34,30 @@ public class ShiroConfig {
   public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
     ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
     bean.setSecurityManager(securityManager);
+
+    // 添加自己的过滤器并且取名为jwt
+    Map<String, Filter> filterMap = new HashMap<>(2);
+    filterMap.put("jwt", new JwtFilter());
+    bean.setFilters(filterMap);
+    // bean.setUnauthorizedUrl("/401");
+
+    //自定义url规则
     Map<String, String> filters = new LinkedHashMap<>();
-    filters.put("/login", "anon");
-    filters.put("/auth/login", "anon");
+    // 所有请求通过我们自己的JWT Filter
     filters.put("/captcha", "anon");
-    filters.put("/static/**", "anon");
-    filters.put("/logout", "anon");
-    filters.put("/**", "authc");
-    // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
-    bean.setLoginUrl("/login");
-    // 登录成功后要跳转的链接
-    bean.setSuccessUrl("/emp/list");
-    // 未授权界面;
-    bean.setUnauthorizedUrl("/unauthorized");
+    filters.put("/auth/login", "anon");
+    filters.put("/auth/logout", "logout");
+    // filters.put("/**", "authc");
+    filters.put("/unauthorized/**", "jwt");
+    filters.put("/**", "jwt");
+
+    // filters.put("/login", "anon");
+
+    // 访问401和404页面不通过我们的Filter
     bean.setFilterChainDefinitionMap(filters);
     return bean;
+
+
   }
 
   /**
@@ -59,18 +66,16 @@ public class ShiroConfig {
    * @return
    */
   @Bean
-  public DefaultWebSecurityManager securityManager(
-          ShiroCacheManager shiroCacheManager, DefaultSessionManager sessionManager) {
+  public DefaultWebSecurityManager securityManager() {
     DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+    //关shiro session
+    DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+    DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+    defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
+    subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
+    securityManager.setSubjectDAO(subjectDAO);
+
     securityManager.setRealm(myRealm());
-    securityManager.setCacheManager(shiroCacheManager);
-    securityManager.setSessionManager(sessionManager);
-    // 关闭shiro的session
-    // DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
-    // DefaultSessionStorageEvaluator evaluator = new DefaultSessionStorageEvaluator();
-    // evaluator.setSessionStorageEnabled(false);
-    // subjectDAO.setSessionStorageEvaluator(evaluator);
-    // securityManager.setSubjectDAO(subjectDAO);
     return securityManager;
   }
 
@@ -83,40 +88,13 @@ public class ShiroConfig {
   public MyRealm myRealm() {
     MyRealm myRealm = new MyRealm();
     // 给 Realm 注入密文匹配Bean
-    myRealm.setCredentialsMatcher(getHashedCredentialsMatcher());
-    // myRealm.setAuthenticationCachingEnabled(true);
-    myRealm.setAuthorizationCachingEnabled(true);
-    myRealm.setCachingEnabled(true);
+    // myRealm.setCredentialsMatcher(getHashedCredentialsMatcher());
+    // myRealm.setAuthenticationCachingEnabled(true);缓存登录
+    // myRealm.setAuthorizationCachingEnabled(true);
+    // myRealm.setCachingEnabled(true);
     return myRealm;
   }
 
-  /**
-   * shiro 缓存管理器
-   *
-   * @return
-   */
-  @Bean
-  public ShiroCacheManager shiroCacheManager(RedisTemplate<String, Object> redisTemplate) {
-    ShiroCacheManager shiroCacheManager = new ShiroCacheManager();
-    shiroCacheManager.setTemplate(redisTemplate);
-    return shiroCacheManager;
-  }
-
-  /** Shiro 自己的Session管理器 关了shiroHttpSession */
-  @Bean
-  public DefaultWebSessionManager sessionManager(SessionDao sessionDao) {
-    MySessionManager sessionManager = new MySessionManager();
-    sessionManager.setSessionDAO(sessionDao);
-    sessionManager.setGlobalSessionTimeout(1800000);
-    return sessionManager;
-  }
-
-  @Bean
-  public SessionDao sessionDao(RedisTemplate<String, Object> redisTemplate2) {
-    SessionDao sessionDao = new SessionDao();
-    sessionDao.setTemplate(redisTemplate2);
-    return sessionDao;
-  }
   /**
    * 凭证匹配器
    *
