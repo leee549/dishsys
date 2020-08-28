@@ -11,4 +11,5 @@ public class Constant {
     public static final Integer SUCCESS =1;
     //失败
     public static final Integer FAIL =0;
+
 }

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: cn.lhx.dishsys.DishsysApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.937 s - in cn.lhx.dishsys.DishsysApplicationTests

@@ -1,5 +1,6 @@
 package cn.lhx.dishsys.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,7 @@ import java.io.Serializable;
 @TableName("user_info")
 public class UserInfo implements Serializable {
     private static final long serialVersionUID = 1L;
-
+    @TableId
     private Integer userId;
     private String userAccount;
     private String userPass;

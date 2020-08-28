@@ -31,7 +31,7 @@ public enum ResultCode {
     // 权限不足
     UN_AUTHORIZED(401, "权限不足"),
     //未认证
-    Un_authenticated(403,"身份未认证");
+    UN_AUTHENTICATED(403,"身份未认证");
 
 
 

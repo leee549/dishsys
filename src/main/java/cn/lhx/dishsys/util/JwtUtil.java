@@ -16,8 +16,8 @@ import java.util.Date;
  */
 public class JwtUtil {
     // 过期时间5分钟
-    // private static final long EXPIRE_TIME = 10*60*1000;
-    private static final long EXPIRE_TIME = 1000;
+    private static final long EXPIRE_TIME = 10*60*1000;
+    // private static final long EXPIRE_TIME = 1000;
 
     private static Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 

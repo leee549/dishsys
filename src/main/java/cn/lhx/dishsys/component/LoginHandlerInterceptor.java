@@ -7,8 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 登陆检查，
+ * 登陆检查，已抛弃此方法
  */
+@Deprecated
 public class LoginHandlerInterceptor implements HandlerInterceptor {
     //目标方法执行之前
     @Override

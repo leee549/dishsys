@@ -43,6 +43,8 @@ public class LoginController {
         if (userInfo.getUserPass().equals(Md5Util.encode(password,userInfo.getUserId().toString()))) {
             HashMap<Object, Object> data = new HashMap<>(2);
             data.put("token", JwtUtil.sign(username,userInfo.getUserPass()));
+            data.put("userId", userInfo.getUserId());
+            data.put("userName", userInfo.getUserAccount());
             return JsonResult.success(data, ResultCode.SUCCESS.val);
         } else {
             throw new AuthenticationException();

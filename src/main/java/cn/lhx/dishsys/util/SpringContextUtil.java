@@ -13,13 +13,26 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class SpringContextUtil implements ApplicationContextAware {
+
+  //保留下来的工厂
   private static ApplicationContext applicationContext;
 
+  /**
+   * 将创建好的工厂作为参数传递到这个类
+    * @param applicationContext
+   * @throws BeansException
+   */
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    //保留工厂
     SpringContextUtil.applicationContext = applicationContext;
   }
 
+  /**
+   * 提供在工厂中获取对象的方法
+   * @param name
+   * @return
+   */
   public static Object getBean(String name) {
     return applicationContext.getBean(name);
   }

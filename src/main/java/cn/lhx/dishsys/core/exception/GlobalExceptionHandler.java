@@ -9,9 +9,11 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,9 +64,11 @@ public class GlobalExceptionHandler {
 
   /** 未认证 */
   @ResponseBody
+  @ResponseStatus(value = HttpStatus.FORBIDDEN)
   @ExceptionHandler(UnauthenticatedException.class)
   public JsonResult<Object> unauthorizedException(UnauthenticatedException ex){
-    return JsonResult.error(ResultCode.Un_authenticated.msg,ResultCode.Un_authenticated.val);
+    log.error("身份未认证",ex);
+    return JsonResult.error(ResultCode.UN_AUTHENTICATED.msg,ResultCode.UN_AUTHENTICATED.val);
   }
 
 

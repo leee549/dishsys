@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lhx.dishsys.dao.MenuDao">
+    <resultMap id="BaseResultMap" type="cn.lhx.dishsys.entity.Menu">
+
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="level" property="level"/>
+        <result column="url" property="url"/>
+        <result column="state" property="state"/>
+        <result column="icon" property="icon"/>
+        <result column="order" property="order"/>
+
+
+        <!--        <result column="order" property="order"/>-->
+
+        <!--菜单与角色多对多-->
+<!--        <collection property="permissions" column="id"-->
+<!--                    select="cn.lhx.dao.PermissionDao.selectByRoleId"/>-->
+
+    </resultMap>
+
+    <select id="selectByRoleId"  resultMap="BaseResultMap">
+
+        SELECT
+        m.id,
+        m.name,
+        m.parent_id,
+        m.level,
+        m.url,
+        m.state,
+        m.icon,
+        m.`order`
+
+
+        FROM menu m
+        left JOIN role_menu rm on m.id = rm.menu_id
+        WHERE rm.role_id=#{id} ORDER BY m.`order` asc
+
+    </select>
+
+
+
+</mapper>

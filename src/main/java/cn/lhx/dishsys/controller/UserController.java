@@ -1,6 +1,8 @@
 package cn.lhx.dishsys.controller;
 
 import cn.lhx.dishsys.core.base.JsonResult;
+import cn.lhx.dishsys.core.enmus.ResultCode;
+import cn.lhx.dishsys.entity.UserInfo;
 import cn.lhx.dishsys.service.PermissionService;
 import cn.lhx.dishsys.service.RoleService;
 import cn.lhx.dishsys.service.UserService;
@@ -23,7 +25,6 @@ public class UserController {
     @Resource
     private PermissionService permissionService;
 
-
     // @RequiresPermissions("user:list")
     @GetMapping("/user")
     public JsonResult<Object> getUser(){
@@ -31,6 +32,11 @@ public class UserController {
         Set<String> permissionByRoleId = permissionService.getPermissionByRoleId(1);
        return JsonResult.success("success!!!!");
 
+    }
+    @GetMapping("/image")
+    public JsonResult<Object> getPicture(Integer id) {
+        UserInfo user = this.userService.getById(id);
+        return JsonResult.success(user.getFaceImg(), ResultCode.SUCCESS.val);
     }
 
 
